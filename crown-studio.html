@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE CROWN STUDIO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --obsidian:#0b0b0c;
+    --obsidian-2:#141416;
+    --card:#19191b;
+    --card-line:#2a2a2d;
+    --bone:#edeae3;
+    --bone-dim:#a29d92;
+    --gold:#b08d3f;
+    --gold-light:#d7bb74;
+    --oxide:#7a3030;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--obsidian);
+    color:var(--bone);
+    font-family:'Space Grotesk', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--gold); color:var(--obsidian);}
+  a{color:inherit; text-decoration:none;}
+  img,svg{display:block; max-width:100%;}
+  .mono{font-family:'JetBrains Mono', monospace;}
+  .display{font-family:'Big Shoulders Display', sans-serif; text-transform:uppercase;}
+  .wrap{max-width:1240px; margin:0 auto; padding:0 32px;}
+  button{font-family:inherit; cursor:pointer; border:none; background:none; color:inherit;}
+  :focus-visible{outline:2px solid var(--gold-light); outline-offset:3px;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }
+
+  /* ---------- Announcement ---------- */
+  .announce{
+    background:var(--gold);
+    color:var(--obsidian);
+    text-align:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:.12em;
+    padding:8px 12px;
+    font-weight:600;
+    text-transform:uppercase;
+  }
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky; top:0; z-index:60;
+    background:rgba(11,11,12,0.88);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--card-line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 32px;
+  }
+  .brand{display:flex; align-items:center; gap:10px;}
+  .brand svg{width:26px; height:26px;}
+  .brand-name{
+    font-family:'Big Shoulders Display', sans-serif;
+    font-weight:800;
+    font-size:20px;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+  }
+  .nav-links{
+    display:flex; gap:36px; list-style:none;
+    font-size:13px; letter-spacing:.1em; text-transform:uppercase; font-weight:500;
+  }
+  .nav-links a{position:relative; padding:4px 0; color:var(--bone-dim); transition:color .25s;}
+  .nav-links a:hover, .nav-links a.active{color:var(--bone);}
+  .nav-links a::after{
+    content:''; position:absolute; left:0; bottom:0; width:0; height:1px; background:var(--gold-light);
+    transition:width .25s;
+  }
+  .nav-links a:hover::after{width:100%;}
+  .nav-actions{display:flex; align-items:center; gap:20px;}
+  .icon-btn{position:relative; width:22px; height:22px; color:var(--bone);}
+  .icon-btn svg{width:100%; height:100%;}
+  .cart-count{
+    position:absolute; top:-8px; right:-10px;
+    background:var(--gold); color:var(--obsidian);
+    font-family:'JetBrains Mono',monospace; font-size:10px; font-weight:700;
+    width:16px; height:16px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .burger{display:none;}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    min-height:92vh;
+    display:flex; flex-direction:column; justify-content:center;
+    overflow:hidden;
+    border-bottom:1px solid var(--card-line);
+  }
+  .hero-crown-bg{
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:1100px; opacity:.05; pointer-events:none;
+  }
+  .hero-inner{position:relative; z-index:2; padding:120px 32px 80px;}
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--gold-light);
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:26px;
+  }
+  .eyebrow::before{content:''; width:26px; height:1px; background:var(--gold-light);}
+  .hero h1{
+    font-size:clamp(52px, 9vw, 128px);
+    line-height:.92;
+    font-weight:900;
+    letter-spacing:.005em;
+    max-width:1000px;
+  }
+  .hero h1 .outline{
+    -webkit-text-stroke:1.5px var(--bone);
+    color:transparent;
+  }
+  .hero p{
+    max-width:460px;
+    color:var(--bone-dim);
+    font-size:16px;
+    line-height:1.6;
+    margin-top:28px;
+  }
+  .hero-cta{display:flex; gap:18px; margin-top:44px; flex-wrap:wrap;}
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    padding:16px 30px;
+    font-size:13px; letter-spacing:.1em; text-transform:uppercase; font-weight:600;
+    border:1px solid var(--bone);
+    transition:all .3s;
+  }
+  .btn-solid{background:var(--bone); color:var(--obsidian);}
+  .btn-solid:hover{background:var(--gold-light); border-color:var(--gold-light); color:var(--obsidian);}
+  .btn-ghost{border-color:var(--card-line); color:var(--bone);}
+  .btn-ghost:hover{border-color:var(--bone);}
+
+  /* ---------- Category rail ---------- */
+  .cat-rail{
+    display:flex; gap:14px; overflow-x:auto;
+    padding:26px 32px; border-bottom:1px solid var(--card-line);
+    scrollbar-width:none;
+  }
+  .cat-rail::-webkit-scrollbar{display:none;}
+  .cat-chip{
+    flex:0 0 auto;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; letter-spacing:.06em; text-transform:uppercase;
+    padding:10px 18px;
+    border:1px solid var(--card-line);
+    color:var(--bone-dim);
+    transition:all .25s;
+    white-space:nowrap;
+  }
+  .cat-chip:hover, .cat-chip.active{border-color:var(--gold); color:var(--bone); background:rgba(176,141,63,.08);}
+
+  /* ---------- Section heading ---------- */
+  section{padding:96px 0;}
+  .sec-head{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    margin-bottom:52px; gap:24px; flex-wrap:wrap;
+  }
+  .sec-eyebrow{
+    font-family:'JetBrains Mono', monospace; font-size:12px;
+    color:var(--gold-light); letter-spacing:.15em; text-transform:uppercase; margin-bottom:10px;
+  }
+  .sec-head h2{
+    font-family:'Big Shoulders Display', sans-serif;
+    font-weight:800; text-transform:uppercase;
+    font-size:clamp(34px,4vw,52px);
+    line-height:1;
+  }
+  .sec-head .sec-note{color:var(--bone-dim); font-size:14px; max-width:320px;}
+
+  /* ---------- Product grid ---------- */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:2px;
+    background:var(--card-line);
+    border:1px solid var(--card-line);
+  }
+  .card{
+    background:var(--obsidian);
+    position:relative;
+    display:flex; flex-direction:column;
+  }
+  .card-art{
+    aspect-ratio:3/4;
+    position:relative;
+    background:linear-gradient(160deg, var(--card), var(--obsidian-2));
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+  }
+  .card-art svg{width:52%; stroke:var(--bone); opacity:.85; transition:transform .5s ease;}
+  .card:hover .card-art svg{transform:scale(1.08) translateY(-4px);}
+  .card-badge{
+    position:absolute; top:12px; left:12px;
+    font-family:'JetBrains Mono', monospace; font-size:10px; letter-spacing:.08em;
+    background:var(--oxide); color:var(--bone); padding:4px 8px; text-transform:uppercase;
+  }
+  .tag{
+    position:absolute; top:14px; right:14px;
+    background:var(--bone); color:var(--obsidian);
+    font-family:'JetBrains Mono', monospace; font-weight:600; font-size:12px;
+    padding:6px 10px 7px;
+    transform:rotate(-6deg);
+    transition:transform .3s;
+    box-shadow:0 4px 10px rgba(0,0,0,.35);
+  }
+  .tag::after{
+    content:''; position:absolute; top:3px; left:50%; transform:translateX(-50%);
+    width:4px; height:4px; border-radius:50%; background:var(--obsidian-2); border:1px solid var(--bone-dim);
+  }
+  .card:hover .tag{transform:rotate(0deg);}
+  .card-body{padding:18px 18px 20px; display:flex; flex-direction:column; gap:10px; flex:1;}
+  .card-cat{font-family:'JetBrains Mono', monospace; font-size:10px; color:var(--gold-light); letter-spacing:.12em; text-transform:uppercase;}
+  .card-name{font-size:16px; font-weight:600;}
+  .card-foot{display:flex; align-items:center; justify-content:space-between; margin-top:auto;}
+  .card-price{font-family:'JetBrains Mono', monospace; font-size:14px; color:var(--bone-dim);}
+  .add-btn{
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+    border:1px solid var(--card-line); padding:9px 14px; color:var(--bone);
+    transition:all .25s;
+  }
+  .add-btn:hover{border-color:var(--gold); background:var(--gold); color:var(--obsidian);}
+  .add-btn.added{border-color:var(--gold-light); background:var(--gold-light); color:var(--obsidian);}
+
+  /* ---------- Editorial / About ---------- */
+  .editorial{
+    display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center;
+    border-top:1px solid var(--card-line); border-bottom:1px solid var(--card-line);
+  }
+  .editorial-art{
+    aspect-ratio:4/5;
+    background:
+      repeating-linear-gradient(135deg, rgba(176,141,63,.07) 0 2px, transparent 2px 26px),
+      linear-gradient(180deg, var(--card), var(--obsidian-2));
+    border:1px solid var(--card-line);
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+  }
+  .editorial-art svg{width:38%; opacity:.9;}
+  .editorial-text .sec-eyebrow{margin-bottom:18px;}
+  .editorial-text h2{
+    font-family:'Big Shoulders Display', sans-serif;
+    font-size:clamp(30px,3.4vw,44px); font-weight:800; text-transform:uppercase; line-height:1.05; margin-bottom:22px;
+  }
+  .editorial-text p{color:var(--bone-dim); line-height:1.75; font-size:15px; max-width:440px; margin-bottom:16px;}
+  .stat-row{display:flex; gap:40px; margin-top:34px;}
+  .stat b{display:block; font-family:'Big Shoulders Display', sans-serif; font-size:34px; color:var(--gold-light);}
+  .stat span{font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--bone-dim); letter-spacing:.08em; text-transform:uppercase;}
+
+  /* ---------- Lookbook ---------- */
+  .lookbook-grid{
+    display:grid; grid-template-columns:1.3fr 1fr 1fr; grid-template-rows:1fr 1fr; gap:2px;
+    height:640px; background:var(--card-line); border:1px solid var(--card-line);
+  }
+  .look{position:relative; overflow:hidden;}
+  .look:nth-child(1){grid-row:1 / 3;}
+  .look-fill{
+    position:absolute; inset:0;
+    display:flex; align-items:flex-end; padding:22px;
+  }
+  .look-fill span{
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--bone-dim);
+  }
+  .look1 .look-bg{background:linear-gradient(165deg,#20201f,#0e0e0f);}
+  .look2 .look-bg{background:linear-gradient(165deg,#1c1a16,#0b0b0c);}
+  .look3 .look-bg{background:linear-gradient(165deg,#171514,#0b0b0c);}
+  .look4 .look-bg{background:linear-gradient(165deg,#191713,#0e0d0c);}
+  .look-bg{position:absolute; inset:0; opacity:.9;}
+  .look-bg::before{
+    content:''; position:absolute; inset:0;
+    background-image:radial-gradient(circle at 30% 20%, rgba(176,141,63,.10), transparent 55%);
+  }
+
+  /* ---------- Newsletter ---------- */
+  .newsletter{
+    text-align:center; padding:110px 32px;
+    border-top:1px solid var(--card-line); border-bottom:1px solid var(--card-line);
+    position:relative;
+  }
+  .newsletter h2{
+    font-family:'Big Shoulders Display', sans-serif; font-weight:900; text-transform:uppercase;
+    font-size:clamp(34px,5vw,64px); margin-bottom:18px;
+  }
+  .newsletter p{color:var(--bone-dim); max-width:440px; margin:0 auto 36px; font-size:15px;}
+  .news-form{display:flex; max-width:440px; margin:0 auto; border:1px solid var(--card-line);}
+  .news-form input{
+    flex:1; background:transparent; border:none; color:var(--bone);
+    padding:16px 18px; font-family:'Space Grotesk', sans-serif; font-size:14px;
+  }
+  .news-form input:focus{outline:none;}
+  .news-form input::placeholder{color:var(--bone-dim);}
+  .news-form button{
+    padding:16px 26px; background:var(--gold); color:var(--obsidian);
+    font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:.08em; text-transform:uppercase; font-weight:700;
+    transition:background .25s;
+  }
+  .news-form button:hover{background:var(--gold-light);}
+  .news-msg{margin-top:16px; font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--gold-light); min-height:16px;}
+
+  /* ---------- Footer ---------- */
+  footer{padding:70px 0 26px;}
+  .foot-top{display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:40px; margin-bottom:60px;}
+  .foot-brand .brand{margin-bottom:16px;}
+  .foot-brand p{color:var(--bone-dim); font-size:13px; line-height:1.7; max-width:260px;}
+  .foot-col h4{
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--gold-light); margin-bottom:18px;
+  }
+  .foot-col ul{list-style:none; display:flex; flex-direction:column; gap:12px;}
+  .foot-col a{color:var(--bone-dim); font-size:14px; transition:color .2s;}
+  .foot-col a:hover{color:var(--bone);}
+  .foot-bottom{
+    border-top:1px solid var(--card-line); padding-top:26px;
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;
+  }
+  .foot-bottom span{font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--bone-dim); letter-spacing:.04em;}
+  .socials{display:flex; gap:16px;}
+  .socials a{width:18px; height:18px; color:var(--bone-dim); transition:color .2s;}
+  .socials a:hover{color:var(--gold-light);}
+  .socials svg{width:100%; height:100%;}
+
+  /* ---------- Cart drawer ---------- */
+  .overlay{
+    position:fixed; inset:0; background:rgba(0,0,0,.6);
+    opacity:0; pointer-events:none; transition:opacity .35s; z-index:80;
+  }
+  .overlay.open{opacity:1; pointer-events:auto;}
+  .drawer{
+    position:fixed; top:0; right:0; height:100%; width:420px; max-width:92vw;
+    background:var(--obsidian-2); border-left:1px solid var(--card-line);
+    z-index:90; transform:translateX(100%); transition:transform .4s cubic-bezier(.22,.9,.3,1);
+    display:flex; flex-direction:column;
+  }
+  .drawer.open{transform:translateX(0);}
+  .drawer-head{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:24px 26px; border-bottom:1px solid var(--card-line);
+  }
+  .drawer-head h3{font-family:'Big Shoulders Display', sans-serif; font-size:22px; letter-spacing:.04em; text-transform:uppercase;}
+  .drawer-close{width:20px; height:20px;}
+  .drawer-items{flex:1; overflow-y:auto; padding:10px 26px;}
+  .empty-cart{
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    height:100%; text-align:center; color:var(--bone-dim); gap:14px; padding:40px;
+  }
+  .empty-cart svg{width:44px; height:44px; opacity:.4;}
+  .drawer-item{
+    display:flex; gap:14px; padding:18px 0; border-bottom:1px solid var(--card-line);
+  }
+  .di-art{
+    width:74px; height:88px; background:linear-gradient(160deg, var(--card), var(--obsidian-2));
+    border:1px solid var(--card-line); display:flex; align-items:center; justify-content:center; flex:0 0 auto;
+  }
+  .di-art svg{width:60%; stroke:var(--bone);}
+  .di-info{flex:1; display:flex; flex-direction:column; gap:6px;}
+  .di-name{font-size:14px; font-weight:600;}
+  .di-cat{font-family:'JetBrains Mono', monospace; font-size:10px; color:var(--bone-dim); text-transform:uppercase; letter-spacing:.06em;}
+  .di-row{display:flex; justify-content:space-between; align-items:center; margin-top:auto;}
+  .qty{display:flex; align-items:center; border:1px solid var(--card-line);}
+  .qty button{width:26px; height:26px; font-size:14px; color:var(--bone-dim);}
+  .qty button:hover{color:var(--bone);}
+  .qty span{width:26px; text-align:center; font-family:'JetBrains Mono', monospace; font-size:12px;}
+  .di-price{font-family:'JetBrains Mono', monospace; font-size:13px;}
+  .di-remove{font-family:'JetBrains Mono', monospace; font-size:10px; color:var(--oxide); text-transform:uppercase; letter-spacing:.06em; margin-top:8px; align-self:flex-start;}
+  .drawer-foot{padding:22px 26px 28px; border-top:1px solid var(--card-line);}
+  .sub-row{display:flex; justify-content:space-between; margin-bottom:6px; font-size:13px; color:var(--bone-dim);}
+  .sub-row.total{color:var(--bone); font-size:16px; font-weight:600; margin-top:12px; margin-bottom:20px;}
+  .sub-row.total .mono{color:var(--gold-light);}
+  .checkout-btn{
+    width:100%; padding:17px; background:var(--bone); color:var(--obsidian);
+    font-size:13px; letter-spacing:.1em; text-transform:uppercase; font-weight:700;
+    transition:background .25s;
+  }
+  .checkout-btn:hover{background:var(--gold-light);}
+
+  /* ---------- Toast ---------- */
+  .toast{
+    position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(20px);
+    background:var(--bone); color:var(--obsidian);
+    font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:.05em;
+    padding:14px 22px; z-index:100; opacity:0; transition:all .35s; pointer-events:none;
+  }
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:980px){
+    .grid{grid-template-columns:repeat(2,1fr);}
+    .editorial{grid-template-columns:1fr; gap:36px;}
+    .lookbook-grid{grid-template-columns:1fr 1fr; height:auto;}
+    .look{aspect-ratio:1/1;}
+    .look:nth-child(1){grid-row:auto; aspect-ratio:1/1;}
+    .foot-top{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:720px){
+    .nav-links{display:none;}
+    .burger{display:flex; width:22px; height:22px; align-items:center;}
+    .grid{grid-template-columns:1fr 1fr;}
+    .sec-head{flex-direction:column; align-items:flex-start;}
+    .foot-top{grid-template-columns:1fr; gap:36px;}
+    section{padding:64px 0;}
+    .wrap{padding:0 20px;}
+    .nav{padding:14px 20px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="announce">Free shipping on orders $150+ &nbsp;·&nbsp; Drop 002 is live &nbsp;·&nbsp; No restocks</div>
+
+<header>
+  <nav class="nav wrap" style="max-width:1240px;">
+    <a href="#top" class="brand">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 8L6 11L12 4L18 11L22 8L20 18H4L2 8Z" stroke-linejoin="round"/><circle cx="12" cy="4" r="1" fill="currentColor" stroke="none"/><circle cx="2" cy="8" r="1" fill="currentColor" stroke="none"/><circle cx="22" cy="8" r="1" fill="currentColor" stroke="none"/></svg>
+      <span class="brand-name">The Crown Studio</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#shop" class="active">Shop</a></li>
+      <li><a href="#lookbook">Lookbook</a></li>
+      <li><a href="#studio">Studio</a></li>
+      <li><a href="#footer">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="icon-btn" aria-label="Search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20L16.5 16.5" stroke-linecap="round"/></svg>
+      </button>
+      <button class="icon-btn" aria-label="Open cart" onclick="toggleCart(true)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 8h12l-1 12H7L6 8Z" stroke-linejoin="round"/><path d="M9 8V6a3 3 0 0 1 6 0v2" stroke-linecap="round"/></svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+      <button class="icon-btn burger" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 6h18M3 12h18M3 18h18" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero" style="padding:0;">
+    <svg class="hero-crown-bg" viewBox="0 0 24 24" fill="none" stroke="var(--bone)" stroke-width="0.4">
+      <path d="M2 8L6 11L12 4L18 11L22 8L20 18H4L2 8Z" stroke-linejoin="round"/>
+    </svg>
+    <div class="hero-inner wrap">
+      <div class="eyebrow">Est. Cebu — Streetwear Studio</div>
+      <h1>Heavy on<br>craft.<span class="outline"> Light</span><br>on noise.</h1>
+      <p>THE CROWN STUDIO builds streetwear for people who dress with intent — heavyweight fabrics, considered silhouettes, no logos shouting for attention. You wear the crown; it doesn't wear you.</p>
+      <div class="hero-cta">
+        <a href="#shop" class="btn btn-solid">Shop Drop 002</a>
+        <a href="#lookbook" class="btn btn-ghost">View Lookbook</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATEGORY RAIL -->
+  <div class="cat-rail">
+    <span class="cat-chip active">All Pieces</span>
+    <span class="cat-chip">Hoodies</span>
+    <span class="cat-chip">Tees</span>
+    <span class="cat-chip">Outerwear</span>
+    <span class="cat-chip">Bottoms</span>
+    <span class="cat-chip">Headwear</span>
+    <span class="cat-chip">Accessories</span>
+  </div>
+
+  <!-- SHOP GRID -->
+  <section id="shop" class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="sec-eyebrow">Drop 002 / 08 Pieces</div>
+        <h2>No Kings,<br>Only Crowns</h2>
+      </div>
+      <p class="sec-note">Each piece is cut in-house and produced in short, numbered runs. Once it's gone, it stays gone.</p>
+    </div>
+
+    <div class="grid" id="productGrid"></div>
+  </section>
+
+  <!-- EDITORIAL -->
+  <section id="studio" class="wrap">
+    <div class="editorial">
+      <div class="editorial-art">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="0.9">
+          <path d="M2 8L6 11L12 4L18 11L22 8L20 18H4L2 8Z" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="editorial-text">
+        <div class="sec-eyebrow">The Studio</div>
+        <h2>Built from the block up.</h2>
+        <p>THE CROWN STUDIO started as a pattern-cutting table in the back of a print shop. No investors, no seasonal filler — just pieces we wanted to wear and couldn't find anywhere else.</p>
+        <p>Every garment is developed over multiple fit sessions before it earns a spot in a drop. We'd rather ship eight pieces we're certain about than twenty-four we're not.</p>
+        <div class="stat-row">
+          <div class="stat"><b>02</b><span>Drops Released</span></div>
+          <div class="stat"><b>420g</b><span>Avg. Fabric Weight</span></div>
+          <div class="stat"><b>100%</b><span>Cut &amp; Sewn In-House</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOOKBOOK -->
+  <section id="lookbook" class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="sec-eyebrow">Lookbook</div>
+        <h2>Field Notes</h2>
+      </div>
+      <p class="sec-note">Shot on the block, not in the studio. Real fits, real weather.</p>
+    </div>
+    <div class="lookbook-grid">
+      <div class="look look1"><div class="look-bg"></div><div class="look-fill"><span>001 — The Longline</span></div></div>
+      <div class="look look2"><div class="look-bg"></div><div class="look-fill"><span>002 — Court Cargo</span></div></div>
+      <div class="look look3"><div class="look-bg"></div><div class="look-fill"><span>003 — Oxide Tee</span></div></div>
+      <div class="look look4"><div class="look-bg"></div><div class="look-fill"><span>004 — Regent Cap</span></div></div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="newsletter">
+    <h2>Join The Court</h2>
+    <p>Early access to drops, restock alerts, and the occasional field note. No spam — we ship pieces, not emails.</p>
+    <form class="news-form" onsubmit="return joinCourt(event)">
+      <input type="email" required placeholder="your@email.com" aria-label="Email address">
+      <button type="submit">Join</button>
+    </form>
+    <div class="news-msg" id="newsMsg"></div>
+  </section>
+
+</main>
+
+<footer id="footer">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <a href="#top" class="brand">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 8L6 11L12 4L18 11L22 8L20 18H4L2 8Z" stroke-linejoin="round"/></svg>
+          <span class="brand-name">The Crown Studio</span>
+        </a>
+        <p>Streetwear cut and sewn in short, numbered runs. Built for people who dress with intent.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="#shop">Hoodies</a></li>
+          <li><a href="#shop">Tees</a></li>
+          <li><a href="#shop">Outerwear</a></li>
+          <li><a href="#shop">Accessories</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Help</h4>
+        <ul>
+          <li><a href="#">Shipping</a></li>
+          <li><a href="#">Returns</a></li>
+          <li><a href="#">Size Guide</a></li>
+          <li><a href="#">Track Order</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Studio</h4>
+        <ul>
+          <li><a href="#studio">About</a></li>
+          <li><a href="#lookbook">Lookbook</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 THE CROWN STUDIO. ALL RIGHTS RESERVED.</span>
+      <div class="socials">
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="#" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 4v10.5a3.5 3.5 0 1 1-3-3.46"/><path d="M14 4c.3 2 1.8 3.6 4 4"/></svg></a>
+        <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4l16 16M20 4L4 20"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- CART DRAWER -->
+<div class="overlay" id="overlay" onclick="toggleCart(false)"></div>
+<aside class="drawer" id="drawer" aria-label="Shopping cart">
+  <div class="drawer-head">
+    <h3>Your Bag</h3>
+    <button class="drawer-close icon-btn" onclick="toggleCart(false)" aria-label="Close cart">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 5l14 14M19 5L5 19" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <div class="drawer-items" id="drawerItems"></div>
+  <div class="drawer-foot" id="drawerFoot" style="display:none;">
+    <div class="sub-row"><span>Subtotal</span><span class="mono" id="subVal">$0.00</span></div>
+    <div class="sub-row"><span>Shipping</span><span class="mono">Calculated at checkout</span></div>
+    <div class="sub-row total"><span>Total</span><span class="mono" id="totalVal">$0.00</span></div>
+    <button class="checkout-btn" onclick="checkout()">Checkout</button>
+  </div>
+</aside>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // ---------- Garment icon library (line-art) ----------
+  const icons = {
+    hoodie: `<svg viewBox="0 0 64 64" fill="none" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M20 12c0-4 5-7 12-7s12 3 12 7"/><path d="M12 22c1-6 4-10 8-10h24c4 0 7 4 8 10l6 10-8 4-2-6v28H18V30l-2 6-8-4 4-10z"/><path d="M26 12v4a6 6 0 0 0 12 0v-4"/></svg>`,
+    tee: `<svg viewBox="0 0 64 64" fill="none" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M22 10 L10 18 L16 26 L20 23 V54 H44 V23 L48 26 L54 18 L42 10 C42 15 38 18 32 18 C26 18 22 15 22 10 Z"/></svg>`,
+    jacket: `<svg viewBox="0 0 64 64" fill="none" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M22 10 L12 16 L8 30 L15 33 L18 24 V54 H46 V24 L49 33 L56 30 L52 16 L42 10 L32 20 L22 10 Z"/><path d="M32 20 V54"/></svg>`,
+    cargo: `<svg viewBox="0 0 64 64" fill="none" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M20 8 H44 L46 30 L50 54 H38 L34 34 H30 L26 54 H14 L18 30 Z"/><rect x="16" y="30" width="10" height="10"/><rect x="38" y="30" width="10" height="10"/></svg>`,
+    shorts: `<svg viewBox="0 0 64 64" fill="none" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M18 10 H46 L48 40 L38 40 L34 24 L30 40 L20 40 Z"/></svg>`,
+    cap: `<svg viewBox="0 0 64 64" fill="none" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M10 34 C10 20 20 12 32 12 C44 12 54 20 54 34 Z"/><path d="M8 36 L28 32 L28 40 L8 40 Z"/><circle cx="32" cy="14" r="1.4" fill="currentColor"/></svg>`,
+    bag: `<svg viewBox="0 0 64 64" fill="none" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><rect x="12" y="20" width="40" height="34" rx="2"/><path d="M22 20v-4a10 10 0 0 1 20 0v4"/></svg>`
+  };
+
+  // ---------- Product catalog ----------
+  const products = [
+    { id:'p1', name:'Regent Heavyweight Hoodie', cat:'Hoodies', price:128, icon:'hoodie', badge:'New' },
+    { id:'p2', name:'Sovereign Boxy Tee', cat:'Tees', price:58, icon:'tee' },
+    { id:'p3', name:'Oxide Coach Jacket', cat:'Outerwear', price:186, icon:'jacket', badge:'Low Stock' },
+    { id:'p4', name:'Court Cargo Pant', cat:'Bottoms', price:142, icon:'cargo' },
+    { id:'p5', name:'Longline Mesh Short', cat:'Bottoms', price:74, icon:'shorts' },
+    { id:'p6', name:'Regent Fitted Cap', cat:'Headwear', price:48, icon:'cap' },
+    { id:'p7', name:'Crest Washed Tee', cat:'Tees', price:62, icon:'tee', badge:'New' },
+    { id:'p8', name:'Dynasty Utility Tote', cat:'Accessories', price:54, icon:'bag' },
+  ];
+
+  const grid = document.getElementById('productGrid');
+  grid.innerHTML = products.map(p => `
+    <div class="card">
+      <div class="card-art">
+        ${p.badge ? `<span class="card-badge">${p.badge}</span>` : ''}
+        <span class="tag mono">$${p.price.toFixed(2)}</span>
+        ${icons[p.icon]}
+      </div>
+      <div class="card-body">
+        <div class="card-cat">${p.cat}</div>
+        <div class="card-name">${p.name}</div>
+        <div class="card-foot">
+          <span class="card-price mono">$${p.price.toFixed(2)}</span>
+          <button class="add-btn" onclick="addToCart('${p.id}', this)">Add to Bag</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  // ---------- Cart state (in-memory) ----------
+  let cart = [];
+
+  function addToCart(id, btnEl){
+    const product = products.find(p => p.id === id);
+    const existing = cart.find(c => c.id === id);
+    if(existing){ existing.qty++; } else { cart.push({...product, qty:1}); }
+    renderCart();
+    showToast(`${product.name} added to your bag`);
+    if(btnEl){
+      const original = btnEl.textContent;
+      btnEl.textContent = 'Added ✓';
+      btnEl.classList.add('added');
+      setTimeout(()=>{ btnEl.textContent = original; btnEl.classList.remove('added'); }, 1200);
+    }
+  }
+
+  function changeQty(id, delta){
+    const item = cart.find(c => c.id === id);
+    if(!item) return;
+    item.qty += delta;
+    if(item.qty <= 0){ cart = cart.filter(c => c.id !== id); }
+    renderCart();
+  }
+
+  function removeItem(id){
+    cart = cart.filter(c => c.id !== id);
+    renderCart();
+  }
+
+  function renderCart(){
+    const itemsEl = document.getElementById('drawerItems');
+    const footEl = document.getElementById('drawerFoot');
+    const countEl = document.getElementById('cartCount');
+    const totalCount = cart.reduce((s,c)=>s+c.qty,0);
+    countEl.textContent = totalCount;
+
+    if(cart.length === 0){
+      itemsEl.innerHTML = `
+        <div class="empty-cart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 8h12l-1 12H7L6 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+          <div>Your bag is empty.</div>
+          <button class="btn btn-ghost" onclick="toggleCart(false)" style="margin-top:6px;">Continue Shopping</button>
+        </div>`;
+      footEl.style.display = 'none';
+      return;
+    }
+
+    footEl.style.display = 'block';
+    itemsEl.innerHTML = cart.map(c => `
+      <div class="drawer-item">
+        <div class="di-art">${icons[c.icon]}</div>
+        <div class="di-info">
+          <div>
+            <div class="di-name">${c.name}</div>
+            <div class="di-cat">${c.cat}</div>
+          </div>
+          <div class="di-row">
+            <div class="qty">
+              <button onclick="changeQty('${c.id}', -1)" aria-label="Decrease quantity">−</button>
+              <span>${c.qty}</span>
+              <button onclick="changeQty('${c.id}', 1)" aria-label="Increase quantity">+</button>
+            </div>
+            <div class="di-price mono">$${(c.price * c.qty).toFixed(2)}</div>
+          </div>
+          <button class="di-remove" onclick="removeItem('${c.id}')">Remove</button>
+        </div>
+      </div>
+    `).join('');
+
+    const subtotal = cart.reduce((s,c)=>s + c.price*c.qty, 0);
+    document.getElementById('subVal').textContent = `$${subtotal.toFixed(2)}`;
+    document.getElementById('totalVal').textContent = `$${subtotal.toFixed(2)}`;
+  }
+
+  function toggleCart(open){
+    document.getElementById('drawer').classList.toggle('open', open);
+    document.getElementById('overlay').classList.toggle('open', open);
+  }
+
+  function checkout(){
+    showToast('This is a demo store — checkout is not connected.');
+  }
+
+  function joinCourt(e){
+    e.preventDefault();
+    document.getElementById('newsMsg').textContent = "You're on the list. Welcome to the court.";
+    e.target.reset();
+    return false;
+  }
+
+  let toastTimer;
+  function showToast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(()=> t.classList.remove('show'), 2600);
+  }
+
+  // Category filter (cosmetic, filters the grid)
+  document.querySelectorAll('.cat-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      const label = chip.textContent.trim();
+      document.querySelectorAll('#productGrid .card').forEach((card, i) => {
+        const p = products[i];
+        card.style.display = (label === 'All Pieces' || p.cat === label) ? '' : 'none';
+      });
+    });
+  });
+
+  renderCart();
+</script>
+
+</body>
+</html>
